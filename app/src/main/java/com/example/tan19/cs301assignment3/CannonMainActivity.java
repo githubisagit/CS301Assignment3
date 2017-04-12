@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -27,9 +28,10 @@ public class CannonMainActivity extends Activity implements SeekBar.OnSeekBarCha
      * creates an AnimationCanvas containing a CannonBallAnimator.
      */
     private SeekBar angleSeekBar ;
-    private Button launchButton;
+    private Button launchButton, gravButton;
     private AnimationCanvas myCanvas;
     private TextView hitText ;
+    private EditText gravText ;
     CannonBallAnimator ballAnimator = new CannonBallAnimator();
 
     private boolean launched = false;
@@ -46,12 +48,16 @@ public class CannonMainActivity extends Activity implements SeekBar.OnSeekBarCha
         mainLayout.addView(myCanvas);
 
         hitText = (TextView)findViewById(R.id.hitText);
+        gravText = (EditText)findViewById(R.id.gravText);
 
         angleSeekBar = (SeekBar)findViewById(R.id.angleSeekBar);
         angleSeekBar.setOnSeekBarChangeListener(this);
 
         launchButton = (Button)findViewById(R.id.launchButton);
         launchButton.setOnClickListener(this);
+
+        gravButton = (Button)findViewById(R.id.gravButton);
+        gravButton.setOnClickListener(this);
 
 
         myCanvas.invalidate();//just in case!
@@ -94,6 +100,18 @@ public class CannonMainActivity extends Activity implements SeekBar.OnSeekBarCha
             } else {
                 ballAnimator.isLaunched(false);
             }
+        }
+        //ADDED in HW3B, this button is used to change a ball's gravity value.
+        if(view.getId() == gravButton.getId()){
+            String gravString = gravText.getText().toString();
+            int newGravVal = Integer.parseInt(gravString);
+
+            float actualGravVal = (float)newGravVal;
+
+            actualGravVal = (actualGravVal / 10);
+
+            ballAnimator.getMyBall().setGravityDelta(actualGravVal);
+            ballAnimator.getMyBall().reset();
         }
 
     }

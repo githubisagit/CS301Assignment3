@@ -21,7 +21,9 @@ public class CannonBall {
     private Paint myPaint = new Paint();
     protected float origX ;//to be used to reset the CannonBall
     protected float origY ;
-    float gravity = 0 ;
+    float gravity ;
+    float gravityDelta = .5f;
+    float wind;
     private boolean outOfBounds = false;
 
 
@@ -34,6 +36,9 @@ public class CannonBall {
         origY = 1050;
         vx = vy = 0 ;
         myPaint.setColor(Color.BLACK);
+
+
+
 
     }
 
@@ -49,7 +54,11 @@ public class CannonBall {
      */
     public void moveCannonBall(float aX, float aY, int maxX, int maxY) {
 
-        gravity += .5f;//to account for gravity.
+
+        //BOTH ADDED IN HW3B, wind accounts for horizontal wind, gravityDelta is used to let the user change Gravity.
+        wind += .05f;
+        gravity += gravityDelta;
+
 
         //adjust the cannon ball if it goes off the edge
         if(x + size > maxX){
@@ -59,6 +68,7 @@ public class CannonBall {
         else{
             vx = aX;//set the x velocity
             this.x += vx;//change the x position to reflect the velocity.
+            x -=wind;
         }
 
         if( y + size > maxY){
@@ -67,6 +77,9 @@ public class CannonBall {
             y = maxY;
             x = this.getX();
             gravity = 0;
+
+            //to ensure the ball stops when it hits the ground
+
 
         }else{
 
@@ -114,6 +127,8 @@ public class CannonBall {
         y = origY;
         vx = vy = 0 ;
         gravity = 0;
+        wind = 0;
+
         outOfBounds = false;
     }
 
@@ -124,4 +139,5 @@ public class CannonBall {
     public void setOrigY(float initY){
         this.origY = initY;
     }
+    public void setGravityDelta(float initGravityDelta){this.gravityDelta = initGravityDelta;}
 }
